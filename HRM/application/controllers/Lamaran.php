@@ -43,6 +43,18 @@ class Lamaran extends CI_Controller {
         
         public function mail()
         {
-            
+            $this->load->library('email');
+
+            $this->email->from('no-reply@solusi-integral.co.id', 'Human Resource');
+            $this->email->to('indra@indramgl.web.id');
+            //$this->email->cc('another@another-example.com');
+            //$this->email->bcc('them@their-example.com');
+            $this->email->set_header('X-MC-Subaccount', 'hrd');
+            $this->email->set_header('X-MC-Track', 'opens,clicks_all');
+
+            $this->email->subject('Email Test');
+            $this->email->message('Testing the email class.');
+
+            $this->email->send();
         }
 }
