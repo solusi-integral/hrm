@@ -70,6 +70,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
     <div id="container">
         <h1><center>Formulir Calon Tenaga Kerja</center></h1>
+        <p>Kami harus melakukan verifikasi email yang anda miliki. Hal tersebut karena kami melakukan komunikasi dengan pelamar menggunakan email. Kami akan mengirimkan sebuah email ke alamat yang dimasukkan dibawah. Silakan cek email anda, di dalamnya terdapat kode aktivasi yang digunakan untuk melanjutkan proses pendaftaran.</p>
+        <p>Silakan masukkan nama lengkap dan alamat email di kolom yang tersedia.</p>
         <center>
             <form action="<?php echo $this->config->base_url(); ?>index.php/lamaran/doverifymail" method="POST">
                 <input type="hidden" name="aktivasi" value="<?php echo mt_rand(100000, 999999); ?>" />

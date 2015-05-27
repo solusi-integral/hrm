@@ -41,7 +41,7 @@ class Lamaran extends CI_Controller {
         
         public function doverifymail()
         {
-            $rawdata    = $this->input->post();
+            //$rawdata    = $this->input->post();
             $kode_akt   = $this->input->post('aktivasi');
             $lamaran    = $this->input->post('lamaran');
             $nama       = $this->input->post('nama');
@@ -53,7 +53,7 @@ class Lamaran extends CI_Controller {
                 'email' => $email,
                 'Lamaran' => $lamaran
             );
-            $this->db->insert('aktivasi_mail', $data);
+            $this->db->insert('aktivasi_mail', $db);
             
             $this->_mail($nama,$email,$kode_akt,$lamaran);
             $data['kode']   = $lamaran;
