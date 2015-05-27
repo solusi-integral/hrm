@@ -99,10 +99,10 @@ Pelamar yang pernah mengirimkan data sebelumnya diharapkan untuk tidak mengirim 
 ====                                                      ====
 ===================================
     <br>
-    <center><a href="<?php echo $this->config->base_url(); ?>index.php/lamaran/verifikasimail">Isi Formulir Lamaran</a></center>
+    <center><a href="<?php echo $this->config->base_url(); $kode = mt_rand(1000, 100000); ?>index.php/lamaran/verifikasimail/<?php echo $kode;?>">Isi Formulir Lamaran</a></center>
     </div>
         
-    <p class="footer">Halaman diproses dalam {elapsed_time}.</p>
+    <p class="footer">Nomor Lamaran: L-<?php echo $kode; ?>. Halaman diproses dalam {elapsed_time}.</p>
     </body>
 </html>
 

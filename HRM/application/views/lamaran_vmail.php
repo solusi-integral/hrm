@@ -70,12 +70,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
     <div id="container">
         <h1><center>Formulir Calon Tenaga Kerja</center></h1>
-        
+        <center>
+            <form action="<?php echo $this->config->base_url(); ?>index.php/lamaran/doverifymail" method="POST">
+                <input type="hidden" name="aktivasi" value="<?php echo mt_rand(100000, 999999); ?>" />
+                <input type="hidden" name="lamaran" value="<?php echo $kode; ?>" />
+                <label for="nama">Nama Lengkap </label><input  type="text" name="name" maxlength="150" size="50"><br><br>
+                <label for="email">Alamat Email: </label><input  type="text" name="email" maxlength="50" size="30"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </center>
     <br>
-    <center><a href="<?php echo $this->config->base_url(); ?>/index.php/lamaran/verifikasimail">Isi Formulir Lamaran</a></center>
     </div>
         
-    <p class="footer">Halaman diproses dalam {elapsed_time}.</p>
+    <p class="footer">Nomor Lamaran: L-<?php echo $kode; ?>. Halaman diproses dalam {elapsed_time}.</p>
     </body>
 </html>
 

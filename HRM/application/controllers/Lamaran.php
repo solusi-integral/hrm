@@ -33,10 +33,21 @@ class Lamaran extends CI_Controller {
             
         }
         
-        public function verifikasimail()
+        public function verifikasimail($kode)
         {
-            $kode       = mt_rand(10000000, 99999999);
-            $this->load->view('lamaran_vmail', $kode);
+            $data['kode']   = $kode;
+            $this->load->view('lamaran_vmail', $data);
+        }
+        
+        public function doverifymail()
+        {
+            $rawdata    = $this->input->post();
+            $kode_akt   = $this->input->post('aktivasi');
+            $lamaran    = $this->input->post('lamaran');
+            $nama       = $this->input->post('nama');
+            $email      = $this->input->post('email');
+            $this->_mail($nama,$email,$kode_akt,$lamaran);
+            print_r($rawdata);
         }
         
         private function _pesan()
@@ -57,21 +68,21 @@ class Lamaran extends CI_Controller {
             
         }
         
-        private function _mail()
+        private function _mail($nama,$email,$kode_akt,$lamaran)
         {
             $this->load->library('email');
 
             $this->email->from('no-reply@solusi-integral.co.id', 'Human Resource');
-            $this->email->to('indra@indramgl.web.id');
+            $this->email->to($email);
             //$this->email->cc('another@another-example.com');
             //$this->email->bcc('them@their-example.com');
             $this->email->set_header('X-MC-Subaccount', 'hrd');
             $this->email->set_header('X-MC-Tags', 'hrd');
             $this->email->set_header('X-MC-Track', 'opens,clicks_all');
 
-            $this->email->subject('Email Test');
-            $this->email->message('Testing the email class.');
+            $this->email->subject('Email Aktivasi Untuk L-'. $lamaran .' ');
+            $this->email->message('Masukkan nomor kode berikut: '. $kode_akt .'ke dalam sistem. ');
 
-            $this->email->send();
+            return $this->email->send();
         }
 }
