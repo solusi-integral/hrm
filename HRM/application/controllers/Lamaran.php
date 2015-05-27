@@ -29,7 +29,8 @@ class Lamaran extends CI_Controller {
             $service = get_twilio_service();
             $number = "+12677056262";
             $dest   = "+6285729416149";
-            $message    = "Silakan masukkan kode verifikasi berikut ini: 879541 untuk melanjutkan lamaran anda.";
+            $kode       = mt_rand(100000, 999999);
+            $message    = "Silakan masukkan kode verifikasi berikut ini: ". $kode ." untuk melanjutkan lamaran anda.";
             
             //$client = new Services_Twilio($sid, $token);
             
@@ -37,6 +38,11 @@ class Lamaran extends CI_Controller {
             
             echo $message->sid;
             //$this->load->view('lamaran_sendsms');
+            
+        }
+        
+        public function mail()
+        {
             
         }
 }
