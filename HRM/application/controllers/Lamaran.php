@@ -46,8 +46,23 @@ class Lamaran extends CI_Controller {
             $lamaran    = $this->input->post('lamaran');
             $nama       = $this->input->post('nama');
             $email      = $this->input->post('email');
+            
+            $this->load->database();
+            $db = array(
+                'Kode' => $kode_akt,
+                'email' => $email,
+                'Lamaran' => $lamaran
+            );
+            $this->db->insert('aktivasi_mail', $data);
+            
             $this->_mail($nama,$email,$kode_akt,$lamaran);
-            print_r($rawdata);
+            $data['kode']   = $lamaran;
+            $this->load->view('lamaran_vhp', $data);
+        }
+        
+        public function doverifyemail()
+        {
+            
         }
         
         private function _pesan()
@@ -59,13 +74,10 @@ class Lamaran extends CI_Controller {
             $kode       = mt_rand(100000, 999999);
             $message    = "Silakan masukkan kode verifikasi berikut ini: ". $kode ." untuk melanjutkan lamaran anda.";
             
-            //$client = new Services_Twilio($sid, $token);
-            
             $message = $service->account->messages->sendMessage($number, $dest, $message);
             
             echo $message->sid;
             //$this->load->view('lamaran_sendsms');
-            
         }
         
         private function _mail($nama,$email,$kode_akt,$lamaran)
@@ -74,14 +86,12 @@ class Lamaran extends CI_Controller {
 
             $this->email->from('no-reply@solusi-integral.co.id', 'Human Resource');
             $this->email->to($email);
-            //$this->email->cc('another@another-example.com');
-            //$this->email->bcc('them@their-example.com');
             $this->email->set_header('X-MC-Subaccount', 'hrd');
             $this->email->set_header('X-MC-Tags', 'hrd');
             $this->email->set_header('X-MC-Track', 'opens,clicks_all');
 
-            $this->email->subject('Email Aktivasi Untuk L-'. $lamaran .' ');
-            $this->email->message('Masukkan nomor kode berikut: '. $kode_akt .'ke dalam sistem. ');
+            $this->email->subject('Email Aktivasi Untuk'. $nama .' L-'. $lamaran .' ');
+            $this->email->message('Masukkan nomor kode berikut: '. $kode_akt .' ke dalam sistem. Ini merupakan email yang terkirim oleh sistem. Kami mohon anda tidak membalas email ini. Terima kasih.');
 
             return $this->email->send();
         }
