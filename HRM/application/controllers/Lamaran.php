@@ -20,10 +20,26 @@ class Lamaran extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('lamaran_welcome');
+            $this->output->cache(5);
+            $this->load->view('lamaran_welcome');
 	}
         
-        public function pesan()
+        public function verifikasihp()
+        {
+            $kode       = mt_rand(100000, 999999);
+            $this->load->helper('form');
+            echo form_open('lamaran/verifikasimail');
+            
+            
+        }
+        
+        public function verifikasimail()
+        {
+            $kode       = mt_rand(10000000, 99999999);
+            $this->load->view('lamaran_vmail', $kode);
+        }
+        
+        private function _pesan()
         {
             $this->load->helper('twilio');
             $service = get_twilio_service();
@@ -41,7 +57,7 @@ class Lamaran extends CI_Controller {
             
         }
         
-        public function mail()
+        private function _mail()
         {
             $this->load->library('email');
 
@@ -50,6 +66,7 @@ class Lamaran extends CI_Controller {
             //$this->email->cc('another@another-example.com');
             //$this->email->bcc('them@their-example.com');
             $this->email->set_header('X-MC-Subaccount', 'hrd');
+            $this->email->set_header('X-MC-Tags', 'hrd');
             $this->email->set_header('X-MC-Track', 'opens,clicks_all');
 
             $this->email->subject('Email Test');

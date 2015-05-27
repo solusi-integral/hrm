@@ -69,37 +69,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
     <div id="container">
-        <h1>Formulir Calon Tenaga Kerja</h1>
-        <p>Perusahaan Teknologi Informasi yang sedang berkembang membutuhkan beberapa tenaga kerja baru  dengan posisi dan kualifikasi sebagai berikut:</p>
-
-1.	Data Entry Staf [DES] [Urgent]
-Kualifikasi:
-◦	Lulusan minimal SMA / SMK jurusan TKJ, atau RPL, diizinkan tahun ajaran 2014/2015
-◦	Mampu dan memahami pengoperasian komputer;
-◦	Pria / wanita;
-◦	Umur maksimal 22 tahun;
-◦	Memahami bahasa Inggris (dasar), dibuktikan dengan sertifikat (jika ada);
-◦	Diutamakan lulusan baru.
-
-2.	Marketing Staff [STM] [Urgent]
-Qualifications:
-◦	Fluency in both English and Indonesian; Oral, Listening, and Writing;
-◦	Candidates with in-depth knowledge about Computer, Internet, and general technology would be highly considered;
-◦	Younger than 25 years old;
-◦	Application Letters and curriculum vitae must be written in English;
-◦	Fresh graduates are highly encouraged to apply.
-
-
-===================================
-Pelamar yang pernah mengirimkan data sebelumnya diharapkan untuk tidak mengirim ulang karena semua data tercatat dalam basis data kami.
-===================================
-====                                                      ====
-==== TIDAK DIPUNGUT BIAYA              ====
-====                                                      ====
-====                                                      ====
-===================================
+        <h1><center>Formulir Calon Tenaga Kerja</center></h1>
+        
     <br>
-    <center><a href="<?php echo $this->config->base_url(); ?>index.php/lamaran/verifikasimail">Isi Formulir Lamaran</a></center>
+    <center><a href="<?php echo $this->config->base_url(); ?>/index.php/lamaran/verifikasimail">Isi Formulir Lamaran</a></center>
     </div>
         
     <p class="footer">Halaman diproses dalam {elapsed_time}.</p>
