@@ -32,6 +32,7 @@ class Lamaran extends CI_Controller {
              * 
              * 
              */
+            
             // Fungsi dibawah digunakan untuk menset cache halaman selama 5 menit
             $this->output->cache(5);
             // Menampilkan Application>View>Lamaran_welcome.php
@@ -162,6 +163,7 @@ class Lamaran extends CI_Controller {
                     // Mengirimkan hasil akhir ke Application>View>lamaran_vphone.php dengan $data
                     $this->load->view('lamaran_vphone', $data);
                 } else {
+                    // Jika kode salah maka akan ditampilkan halaman Application>view>lamaran_salah
                     $this->load->view('laraman_salah');
                 }
             }
@@ -169,32 +171,75 @@ class Lamaran extends CI_Controller {
         
         private function _pesan()
         {
+            /**
+             * Metode Untuk Mengirim SMS Melalui Twilio
+             * 
+             * Metode ini digunakan untuk mengirimkan SMS melalui API Twilio.
+             * 
+             * @author Indra Kurniawan <indra@indramgl.web.id>
+             * 
+             * @var object  $service    Object dari API Twilio
+             * @var mixed   $number     Nomor Telepon Twilio Kita
+             * @var mixed   $dest       Nomor telepon pelamar
+             * @var int     $kode       Kode aktivasi HP
+             * @var string  $message    Pesan yang dikirim ke HP pelamar
+             * @var object  $msg        Hasil proses API Twilio, message ID
+             * 
+             */
+            
+            // Memanggil helper Twilio
             $this->load->helper('twilio');
+            // Menginisiasi API Twilio
             $service = get_twilio_service();
+            // Nomor Twilio kita
             $number = "+12677056262";
+            // Nomor Pelamar
             $dest   = "+6285729416149";
+            // Menghasilkan nomor acak 6 digit
             $kode       = mt_rand(100000, 999999);
+            // Konfigurasi pesan yang akan dikirim ke pelamar
             $message    = "Silakan masukkan kode verifikasi berikut ini: ". $kode ." untuk melanjutkan lamaran anda.";
             
-            $message = $service->account->messages->sendMessage($number, $dest, $message);
+            // Mengirim perintah SMS ke API Twilio
+            $msg = $service->account->messages->sendMessage($number, $dest, $message);
             
-            echo $message->sid;
+            // Mengembalikan hasil ke fungsi pemanggil
+            return $msg->sid;
             //$this->load->view('lamaran_sendsms');
         }
         
         private function _mail($nama,$email,$kode_akt,$lamaran)
         {
+            /**
+             * Metode Pengiriman Email Melalui Mandrill
+             * 
+             * Metode ini digunakan untuk mengirimkan email melalui Mandrill.
+             * Metode ini bekerja dengan bantuan API dan PHP Library yang disedia
+             * kan oleh Mandrill. Terletak di folder Libraries>Mandrill
+             * 
+             * @author Indra Kurniawan<indra@indramgl.web.id>
+             * 
+             * @return object Hasil Pemanggilan
+             */
+            
+            // Memanggila library email
             $this->load->library('email');
-
+            // Konfigurasi email pengirim
             $this->email->from('no-reply@solusi-integral.co.id', 'Human Resource');
+            // Konfigurasi email penerima
             $this->email->to($email);
+            // Konfigurasi sub account HRD di Mandrill
             $this->email->set_header('X-MC-Subaccount', 'hrd');
+            // Kondigurasi tag HRD di Mandrill
             $this->email->set_header('X-MC-Tags', 'hrd');
+            // Konfigurasi untuk melacak setiap email yang dibuka dan juga click 
             $this->email->set_header('X-MC-Track', 'opens,clicks_all');
-
+            // Konfigurasi subjek pesan
             $this->email->subject('Email Aktivasi Untuk'. $nama .' L-'. $lamaran .' ');
+            // Konfiguaasi isi email yang dikirimkan ke pelamar
             $this->email->message('Masukkan nomor kode berikut: '. $kode_akt .' ke dalam sistem. Ini merupakan email yang terkirim oleh sistem. Kami mohon anda tidak membalas email ini. Terima kasih.');
-
+            
+            // Mengembalikan hasil ke metode pemanggil
             return $this->email->send();
         }
 }
