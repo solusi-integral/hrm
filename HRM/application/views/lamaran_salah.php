@@ -69,16 +69,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
     <div id="container">
-        <h1><center>Verifikasi Alamat Email</center></h1>
-        <center>
-            <form action="<?php echo $this->config->base_url(); ?>index.php/lamaran/doverifyemail" method="POST">
-                <input type="hidden" name="lamaran" value="<?php echo $kode; ?>" />
-                <label for="nama">Kode Aktivasi </label><input  type="text" name="aktivasi" maxlength="10" size="50"><br><br>
-                <label for="email">Alamat Email: </label><input  type="text" name="email" maxlength="50" size="30"><br><br>
-                <input type="submit" value="Submit">
-            </form>
-        </center>
+        <h1>Kode Verifikasi Salah</h1>
+        <p>Maaf kode verifikasi email / hp yang anda masukkan tidak sesuai dengan yang tercatat di sistem kami. Silakan ulangi kembali proses verifikasi anda.</p>
     <br>
+    <center><a href="<?php echo $this->config->base_url(); $kode = mt_rand(1000, 100000); ?>index.php/lamaran/verifikasimail/<?php echo $kode;?>">Isi Formulir Lamaran</a></center>
     </div>
         
     <p class="footer">Nomor Lamaran: L-<?php echo $kode; ?>. Halaman diproses dalam {elapsed_time}.</p>
