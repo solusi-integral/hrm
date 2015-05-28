@@ -54,7 +54,21 @@ class Lamaran extends CI_Controller {
         
         public function verifikasimail($kode)
         {
+            /**
+             * Metode untuk menampilkan form verifikasi email
+             * 
+             * Metode paling sederhana, metode ini menerima kode lamaran dari
+             * halaman utama melalui $kode yang kemudia dikirim ke view.
+             * 
+             * @author Indra Kurniawan<indra@indramgl.web.id>
+             * 
+             * @var array   $data   Menampung array untuk kode lamaran
+             * 
+             */
+            
+            // Menampung kode lamaran
             $data['kode']   = $kode;
+            // Menampilkan view>lamaran_vmail dengan $data
             $this->load->view('lamaran_vmail', $data);
         }
         
