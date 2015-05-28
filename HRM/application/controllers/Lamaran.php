@@ -100,32 +100,66 @@ class Lamaran extends CI_Controller {
             
             // Memanggil metode internal _mail untuk mengeksekusi pengiriman email
             $this->_mail($nama,$email,$kode_akt,$lamaran);
-            // 
+            // Memasukkan nomor lamaran ke dalam array untuk dikirim ke form selanjutnya
             $data['kode']   = $lamaran;
+            // Memanggil view (Application>Views>lamaran_vhp.php
             $this->load->view('lamaran_vhp', $data);
         }
         
         public function doverifyemail()
         {
+            /**
+             * Metode untuk proses kode verifikasi email
+             * 
+             * Metode ini digunakan setelah kode verifikasi diterima oleh 
+             * pelamar. Pelamar akan dibawa pada halaman selanjutnya jika kode 
+             * yang dimasukkan kedalam form cocok dengan kode yang telah disimpan
+             * di database.
+             * 
+             * @author Indra Kurniawan <indra@indramgl.web.id>
+             * @var int     $kode_akt   Kode aktivasi yang diperoleh dari form
+             * @var int     $lamaran    Nomor lamaran elektronik
+             * @var string  $email      Alamat email pelamar
+             * @var object  $query      Menampung hasil query database
+             * @var int     $riil       Menampung hasil kode aktivasi dari DB
+             * @var int     $dpkai      Integer untuk menset kolom dipakai di DB
+             * @var array   $dt         Menampung update data ke DB
+             * 
+             */
+            
+            // Menampung nilai dari POST form kode aktivasi
             $kode_akt   = $this->input->post('aktivasi');
+            // menampung kode lamaran dari POST form
             $lamaran    = $this->input->post('lamaran');
+            // Menampung alamat email dari POST form
             $email      = $this->input->post('email');
-            $limit      = 1;
+            // Memanggil modul database
             $this->load->database();
+            // Menset kriteria pencarian DB di kolom Lamaran 
             $this->db->where('Lamaran', $lamaran);
+            // Melakukan query ke tabel 'aktivasi_mail' dan masuk ke array
             $query = $this->db->get('aktivasi_mail');
+            // Memproses setiap hasil yang keluar dari database
             foreach ($query->result() as $row)
             {
+                // Memasukkan setiap baris ke variabel $riil
                 $riil = $row->Lamaran;
+                // Memisahkan antara kode valid dan tidak
                 if ($kode_akt = $riil) {
+                    // Memasukkan kode lamaran ke dalam array untuk dikirim ke view
                     $data['kode']   = $lamaran;
+                    // Set variabel dipakai sebagai 1 => Sudah dipakai
                     $dpkai      = 1;
+                    // Memasukan $dpkai ke dalam array untuk update database
                     $dt = array(
                         'Dipakai' => $dpkai
                     );
 
+                    // Menentukan kriteria update database
                     $this->db->where('Kode', $lamaran);
+                    // Mengeksekusi update database
                     $this->db->update('aktivasi_mail', $dt);
+                    // Mengirimkan hasil akhir ke Application>View>lamaran_vphone.php dengan $data
                     $this->load->view('lamaran_vphone', $data);
                 } else {
                     $this->load->view('laraman_salah');
