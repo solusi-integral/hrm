@@ -35,6 +35,23 @@ class Lamaran extends CI_Controller {
             
             // Fungsi dibawah digunakan untuk menset cache halaman selama 5 menit
             $this->output->cache(5);
+            $lamaran    = mt_rand(1000, 100000);
+            $kmail      = mt_rand(100000, 999999);
+            $khp        = mt_rand(100000, 999999);
+            
+            // Load modul database
+            $this->load->database();
+            // Menset kriteria pencarian DB di kolom Lamaran 
+            $this->db->where('Lamaran', $lamaran);
+            // Melakukan query ke tabel 'aktivasi_mail' dan masuk ke array
+            // $query = $this->db->get('aktivasi_mail');
+            $this->db->from('aktivasi_mail');
+            echo $this->db->count_all_results();
+            
+            $this->load->library('encrypt');
+            $kmail_encrypt = $this->encrypt->encode($kmail);
+            $khp_encrypt = $this->encrypt->encode($khp);
+            
             // Menampilkan Application>View>Lamaran_welcome.php
             $this->load->view('lamaran_welcome');
 	}
