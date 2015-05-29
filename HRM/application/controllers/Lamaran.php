@@ -35,9 +35,47 @@ class Lamaran extends CI_Controller {
             
             // Fungsi dibawah digunakan untuk menset cache halaman selama 5 menit
             $this->output->cache(5);
+            
+            // Membuat kode lamaran
             $lamaran    = mt_rand(1000, 100000);
+            // Load modul database
+            $this->load->database();
+            // Menset kriteria pencarian DB di kolom Lamaran 
+            $this->db->where('Lamaran', $lamaran);
+            // Melakukan query ke tabel 'aktivasi_mail' dan masuk ke array
+            $this->db->from('aktivasi_mail');
+            // Jumlah data di database apabila 1 berarti sudah dipakai, regenerate
+            $lmc        = $this->db->count_all_results();
+            // Regenerate nomor lamaran apabila sudah dipakai
+            if ($lmc == 1) {
+                $lamaran    = mt_rand(1000, 100000);
+            } 
+            
+            // membuat kode aktivasi untuk email
             $kmail      = mt_rand(100000, 999999);
+            // Menset kriteria pencarian DB di kolom Lamaran 
+            $this->db->where('Kode', $kmail);
+            // Melakukan query ke tabel 'aktivasi_mail' dan masuk ke array
+            $this->db->from('aktivasi_mail');
+            // Jumlah data di database apabila 1 berarti sudah dipakai, regenerate
+            $lmc        = $this->db->count_all_results();
+            // Buat ulang jika sudah pernah digunakan
+            if ($lmc == 1) {
+                $kmail      = mt_rand(100000, 999999);
+            } 
+            
+            // membuat kode aktivasi untuk hp
             $khp        = mt_rand(100000, 999999);
+            // Menset kriteria pencarian DB di kolom Lamaran 
+            $this->db->where('Kode', $khp);
+            // Melakukan query ke tabel 'aktivasi_mail' dan masuk ke array
+            $this->db->from('aktivasi_hp');
+            // Jumlah data di database apabila 1 berarti sudah dipakai, regenerate
+            $lmc        = $this->db->count_all_results();
+            // Buat ulang jika sudah pernah digunakan 
+            if ($lmc == 1) {
+                $khp        = mt_rand(100000, 999999);
+            } 
             
             // Load modul database
             $this->load->database();
@@ -178,7 +216,7 @@ class Lamaran extends CI_Controller {
                 // Memasukkan setiap baris ke variabel $riil
                 $riil = $row->Lamaran;
                 // Memisahkan antara kode valid dan tidak
-                if ($kode_akt = $riil) {
+                if ($kode_akt == $riil) {
                     // Memasukkan kode lamaran ke dalam array untuk dikirim ke view
                     $data['kode']   = $lamaran;
                     // Set variabel dipakai sebagai 1 => Sudah dipakai
