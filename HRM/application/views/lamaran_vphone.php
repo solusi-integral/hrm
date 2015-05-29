@@ -73,8 +73,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <center>
             <form action="<?php echo $this->config->base_url(); ?>index.php/lamaran/doverhp" method="POST">
                 <input type="hidden" name="lamaran" value="<?php echo $kode; ?>" />
-                <label for="nama">Kode Aktivasi </label><input  type="text" name="aktivasi" maxlength="10" size="50"><br><br>
-                <label for="email">Alamat Email: </label><input  type="text" name="email" maxlength="50" size="30"><br><br>
+                <input type="hidden" name="aktivasi" value="<?php echo $akthp; ?>" />
+                <label for="nama">Nama: </label><input  type="text" name="nama" maxlength="100" size="50"><br><br>
+                <label for="hp">Nomor Handphone (Format +628xxx): </label><input  type="text" name="hp" maxlength="20" size="30"><br><br>
                 <input type="submit" value="Submit">
             </form>
         </center>

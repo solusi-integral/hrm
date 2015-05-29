@@ -139,6 +139,7 @@ class Lamaran extends CI_Controller {
              * @var int     $riil       Menampung hasil kode aktivasi dari DB
              * @var int     $dpkai      Integer untuk menset kolom dipakai di DB
              * @var array   $dt         Menampung update data ke DB
+             * @var int     $akthp      Kode aktivasi untuk hp dan dikirim
              * 
              */
             
@@ -169,6 +170,11 @@ class Lamaran extends CI_Controller {
                     $dt = array(
                         'Dipakai' => $dpkai
                     );
+                    
+                    // Menghasilkan nomor acak 6 digit
+                    $akthp          = mt_rand(100000, 999999);
+                    // Memasukkan nomor acak ke array untuk dikirim ke form
+                    $data['akthp']  = $akthp;
 
                     // Menentukan kriteria update database
                     $this->db->where('Kode', $lamaran);
@@ -183,7 +189,63 @@ class Lamaran extends CI_Controller {
             }
         }
         
-        private function _pesan()
+        public function doverhp()
+        {
+            /**
+             * Metode untuk Memproses data dari form verifikasi nomor HP
+             * 
+             * Motode ini diguankan untuk memproses data dari form verifikasi.
+             * Data HP yang dimasukkan oleh pelamar akan di kirim ke metode lain
+             * untuk selanjutnya dikirim nomor aktivasi HP.
+             * 
+             * Hal ini digunakan untuk memastikan bahwa nomor HP pelamar memang
+             * benar-benar aktif. Sehingga ketika kita perlu menghubungi pelamar
+             * hal tersebut dapat dilakukan.
+             * 
+             * @author Indra Kurniawan <indra@indramgl.web.id>
+             * 
+             * @var int     $kode_akt       Menampung kode aktivasi dari form
+             * @var int     $lamaran        Menampung nomor lamaran dari form
+             * @var string  $nama           Menampung nama pelamar
+             * @var string  $hp             Menampung nomor HP Pelamar
+             * @var array   $db             Mengkombinasikan data ke array DB
+             * @var string  $dest           Konversi variable
+             * @var int     $kode           Menampung kode aktivasi
+             * @var object  $hasil          Return dari _pesan berupa sid
+             * 
+             * @return type
+             */
+            
+            // Menampung nilai dari POST form kode aktivasi
+            $kode_akt   = $this->input->post('aktivasi');
+            // menampung kode lamaran dari POST form
+            $lamaran    = $this->input->post('lamaran');
+            // Menampung nomor hp dari POST form
+            $hp      = $this->input->post('hp');
+            // Menampung nama dari POST form
+            $nama      = $this->input->post('nama');
+            
+            // Memanggil modul / helper CI Database
+            $this->load->database();
+            // Membuat array data dari form untuk dimasukkan ke dalam database
+            $db = array(
+                'Kode' => $kode_akt,
+                'nama' => $nama,
+                'hp' => $hp,
+                'Lamaran' => $lamaran
+            );
+            // Memasukkan data array $db ke dalam tabel 'aktivasi_mail'
+            $this->db->insert('aktivasi_hp', $db);
+            
+            // Mengkonversikan nomor hp
+            $dest   = $hp;
+            // Kode aktivasi
+            $kode   = $kode_akt;
+            // mengirim hasil ke metode pengiriman dan menampung hasil
+            $pesan  = $this->_pesan($dest, $kode, $lamaran);
+        }
+        
+        private function _pesan($dest, $kode, $lamaran)
         {
             /**
              * Metode Untuk Mengirim SMS Melalui Twilio
@@ -207,12 +269,8 @@ class Lamaran extends CI_Controller {
             $service = get_twilio_service();
             // Nomor Twilio kita
             $number = "+12677056262";
-            // Nomor Pelamar
-            $dest   = "+6285729416149";
-            // Menghasilkan nomor acak 6 digit
-            $kode       = mt_rand(100000, 999999);
             // Konfigurasi pesan yang akan dikirim ke pelamar
-            $message    = "Silakan masukkan kode verifikasi berikut ini: ". $kode ." untuk melanjutkan lamaran anda.";
+            $message    = "Silakan masukkan kode verifikasi berikut ini: ". $kode ." untuk melanjutkan nomor lamaran". $lamaran ."anda.";
             
             // Mengirim perintah SMS ke API Twilio
             $msg = $service->account->messages->sendMessage($number, $dest, $message);
