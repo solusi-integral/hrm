@@ -73,8 +73,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <p>Kami harus melakukan verifikasi email yang anda miliki. Hal tersebut karena kami melakukan komunikasi dengan pelamar menggunakan email. Kami akan mengirimkan sebuah email ke alamat yang dimasukkan dibawah. Silakan cek email anda, di dalamnya terdapat kode aktivasi yang digunakan untuk melanjutkan proses pendaftaran.</p>
         <p>Silakan masukkan nama lengkap dan alamat email di kolom yang tersedia.</p>
         <center>
-            <form action="<?php echo $this->config->base_url(); ?>index.php/lamaran/doverifymail" method="POST">
-                <input type="hidden" name="aktivasi" value="<?php echo mt_rand(100000, 999999); ?>" />
+            <form action="<?php echo $this->config->base_url(); $akt = mt_rand(100000, 999999); ?>index.php/lamaran/doverifymail" method="POST">
+                <input type="hidden" name="aktivasi" value="<?php echo $akt ?>" />
                 <input type="hidden" name="lamaran" value="<?php echo $kode; ?>" />
                 <label for="nama">Nama Lengkap </label><input  type="text" name="name" maxlength="150" size="50"><br><br>
                 <label for="email">Alamat Email: </label><input  type="text" name="email" maxlength="50" size="30"><br><br>
