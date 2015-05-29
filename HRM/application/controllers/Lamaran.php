@@ -230,7 +230,6 @@ class Lamaran extends CI_Controller {
             // Membuat array data dari form untuk dimasukkan ke dalam database
             $db = array(
                 'Kode' => $kode_akt,
-                'nama' => $nama,
                 'hp' => $hp,
                 'Lamaran' => $lamaran
             );
